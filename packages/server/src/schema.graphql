@@ -1,7 +1,16 @@
+type Product {
+  _id: ID!
+  name: String
+  price: Int
+  quantity: Int
+  total: Int
+}
+
 type Order {
   _id: ID!
   region_code: String
   routeId: String
+  products: [Product]
 }
 
 type Query {
@@ -9,4 +18,5 @@ type Query {
   order(id: ID!): Order
   orders: [Order]
   ordersByRegion(regionCode: String): [Order]
+  productsByOrder(orderId: ID!): [Product]
 }

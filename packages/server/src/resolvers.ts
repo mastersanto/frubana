@@ -3,7 +3,7 @@
 import defaults from './defaults';
 
 const {
-  orders,
+  orders
   // regions
 } = defaults;
 
@@ -19,6 +19,12 @@ export default {
       console.log('RESOLVER ID >>> ', regionCode);
       return orders.filter(order => order.region_code === regionCode);
     },
+    productsByOrder: (_, { orderId }: any): any => {
+      console.log('RESOLVER ID >>> ', orderId);
+      const order = orders.find(order => order._id === orderId);
+      return order.products;
+      // return orders.filter(order => order._id === id);
+    },
     hello(obj: any, { subject }: { subject: string }) {
       return `Hello, ${subject}! from Server`;
     }
@@ -32,30 +38,3 @@ export default {
   },
   */
 };
-
-/*
-
-query hello($subject:String) {
-  hello(subject: $subject)
-}
-
-query orders {
-  orders {
-    _id
-    region_code
-    routeId
-  }
-}
-
-query ordersByRegion($region: String) {
-  ordersByRegion(regionCode: $region) {
-    region_code
-    routeId
-  }
-}
-
-// QUERY VARIABLES
-{
-  "region": "BOG"
-}
-*/
