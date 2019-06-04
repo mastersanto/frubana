@@ -1,0 +1,12 @@
+type Order {
+  _id: ID!
+  region_code: String
+  routeId: String
+}
+
+type Query {
+  hello(subject: String): String
+  order(id: ID!): Order
+  orders: [Order]
+  ordersByRegion(regionCode: String): [Order]
+}
