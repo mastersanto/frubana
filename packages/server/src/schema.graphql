@@ -17,6 +17,9 @@ type Query {
   hello(subject: String): String
   order(id: ID!): Order
   orders: [Order]
-  ordersByRegion(regionCode: String): [Order]
-  productsByOrder(orderId: ID!): [Product]
+  regions: [String]
+  ordersByRegionCode(regionCode: String): [Order]
+  routes: [String]
+  ordersByRouteId(routeId: String): [Order]
+  productsByOrderId(orderId: ID!): [Product]
 }

@@ -34,15 +34,36 @@ query orders {
   }
 }
 
-query ordersByRegion($region: String) {
-  ordersByRegion(regionCode: $region) {
+query regions {
+  regions
+}
+
+query ordersByRegionCode($regionCode: String) {
+  ordersByRegionCode(regionCode: $regionCode) {
     region_code
     routeId
   }
 }
 
-query productsByOrder($orderId: ID!) {
-  productsByOrder(orderId: $orderId) {
+query routes {
+  routes
+}
+
+query ordersByRouteId($routeId: String) {
+  ordersByRouteId(routeId: $routeId) {
+    region_code
+    products {
+      name
+      price
+      quantity
+      total
+    }
+    routeId
+  }
+}
+
+query productsByOrderId($orderId: ID!) {
+  productsByOrderId(orderId: $orderId) {
     name
     quantity
     price
@@ -57,11 +78,19 @@ query ordersByRegion
 
 ```
 {
-  "region": "BOG"
+  "regionCode": "BOG"
 }
 ```
 
-query productsByOrder
+query ordersByRouteId
+
+```
+{
+  "routeId": "bcfccef8-c9ae-4879-9fa2-6c68874643e7"
+}
+```
+
+query productsByOrderId
 
 ```
 {

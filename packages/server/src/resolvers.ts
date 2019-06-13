@@ -4,25 +4,32 @@ import defaults from './defaults';
 
 const {
   orders
-  // regions
 } = defaults;
+
+const getSameValuesArray = (obj: any, key: string) => obj.reduce((newArray: [string], obj: any) => (newArray.indexOf(obj[key]) < 0 ? newArray.concat([obj[key]]) : newArray), []);
 
 export default {
   Query: {
-    // @ts-ignore
-    order: (_, { id }) => {
+    order: (obj: any, { id }: { id: string }): any => {
       console.log('Query clip >>> ', id);
       return orders.find(order => order._id === id);
     },
     orders: () => orders,
-    ordersByRegion: (obj: any, { regionCode }: { regionCode: string }): any => {
-      console.log('RESOLVER ID >>> ', regionCode);
+		regions: () => getSameValuesArray(orders, 'region_code'),
+		// regions: () => orders.reduce((regionsList, order) => (regionsList.indexOf(order.region_code) < 0 ? regionsList.concat([order.region_code]) : regionsList), []),
+		ordersByRegionCode: (obj: any, { regionCode }: { regionCode: string }): any => {
+      console.log('ordersByRegionCode ID >>> ', regionCode);
       return orders.filter(order => order.region_code === regionCode);
     },
-    productsByOrder: (_, { orderId }: any): any => {
-      console.log('RESOLVER ID >>> ', orderId);
-      const order = orders.find(order => order._id === orderId);
-      return order.products;
+    ordersByRouteId: (obj: any, { routeId }: { routeId: string }): any => {
+      console.log('ordersByRouteId ID >>> ', routeId);
+      return orders.filter(order => order.routeId === routeId);
+    },
+	  routes: () => getSameValuesArray(orders, 'routeId'),
+	  productsByOrderId: (obj: any, { orderId }: any): any => {
+      console.log('productsByOrderId ID >>> ', orderId);
+      const selectedOrder = orders.find(order => order._id === orderId);
+      return selectedOrder.products;
       // return orders.filter(order => order._id === id);
     },
     hello(obj: any, { subject }: { subject: string }) {
