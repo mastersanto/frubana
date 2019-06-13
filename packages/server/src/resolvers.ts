@@ -16,7 +16,6 @@ export default {
     },
     orders: () => orders,
 		regions: () => getSameValuesArray(orders, 'region_code'),
-		// regions: () => orders.reduce((regionsList, order) => (regionsList.indexOf(order.region_code) < 0 ? regionsList.concat([order.region_code]) : regionsList), []),
 		ordersByRegionCode: (obj: any, { regionCode }: { regionCode: string }): any => {
       console.log('ordersByRegionCode ID >>> ', regionCode);
       return orders.filter(order => order.region_code === regionCode);
@@ -30,7 +29,6 @@ export default {
       console.log('productsByOrderId ID >>> ', orderId);
       const selectedOrder = orders.find(order => order._id === orderId);
       return selectedOrder.products;
-      // return orders.filter(order => order._id === id);
     },
     hello(obj: any, { subject }: { subject: string }) {
       return `Hello, ${subject}! from Server`;
