@@ -1,26 +1,19 @@
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import Orders from './Orders';
-
-// @ts-ignore
 const Dashboard = props => {
-  const { region_route, routeId } = props.match.params;
-  console.log('Dashboard')
+  console.log('Dashboard', props)
 
   return (
       <div>
         <h2>Dashboard</h2>
-        <dl>
-          <dt>Region</dt>
-          <dd>{region_route || 'NA'}</dd>
-          <dt>Route</dt>
-          <dd>{routeId || 'NA'}</dd>
-          <Orders region={'BOG'} />
-        </dl>
+        <h3>Regions</h3>
+        <ul>
+          <li>BOG</li>
+          <li>BAQ</li>
+        </ul>
       </div>
   );
 };
 
-// @ts-ignore
 export default withRouter(Dashboard);

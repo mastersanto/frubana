@@ -28,12 +28,9 @@ interface State {}
 
 
 class Orders extends React.Component<Props, State> {
-	// tslint:disable-next-line
 	props: Props;
 
-	// tslint:disable-next-line
 	render() {
-		// const { editClip, goToFragment } = this.props;
 		const { region } = this.props;
 
 		return (
