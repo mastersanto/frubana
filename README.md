@@ -2,14 +2,6 @@
 
 Frubana dashboard.
 
-
-## How did I start it?
-
-```
-yarn create apollo-app frubana
-```
-
-
 ## Development
 
 Running:
@@ -28,6 +20,10 @@ You'll get:
 * [Orders By Region](http://localhost:3000/region/BAQ)
 ```
 /region/:region
+```
+* [Products By Order](http://localhost:3000/order/2d2dc292-b2d8-4017-9ffd-33e17d4bcc40)
+```
+/order/:order
 ```
 
 ## GraphQL playground

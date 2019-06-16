@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import App from './Dashboard/App';
 import Dashboard from './Dashboard/Dashboard';
 import Orders from './Dashboard/Orders';
+import Order from './Dashboard/Order';
 // import Region from './Dashboard/Region';
 
 const Routes = () => (
@@ -17,6 +18,15 @@ const Routes = () => (
 							const { region } = props.match.params;
 							return (
 									<Orders region={region} history={props.history} location={props.location} match={props.match} />
+							);
+						}}
+				/>
+				<Route
+						path="/order/:order"
+						children={(props) => {
+							const { order } = props.match.params;
+							return (
+									<Order order={order} history={props.history} location={props.location} match={props.match} />
 							);
 						}}
 				/>

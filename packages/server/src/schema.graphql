@@ -1,5 +1,5 @@
 type Product {
-  _id: ID!
+  _id: String
   name: String
   price: Int
   quantity: Int
@@ -7,7 +7,7 @@ type Product {
 }
 
 type Order {
-  _id: ID!
+  _id: String
   region_code: String
   routeId: String
   products: [Product]
@@ -15,11 +15,11 @@ type Order {
 
 type Query {
   hello(subject: String): String
-  order(id: ID!): Order
+  order(id: String): Order
   orders: [Order]
   regions: [String]
   ordersByRegionCode(regionCode: String): [Order]
   routes: [String]
   ordersByRouteId(routeId: String): [Order]
-  productsByOrderId(orderId: ID!): [Product]
+  productsByOrderId(orderId: String): [Product]
 }

@@ -2,8 +2,6 @@ import gql from 'graphql-tag';
 import * as React from 'react';
 import { Query } from 'react-apollo';
 
-import Order from './Order';
-
 export const GET_ORDERS = gql`
     query ordersByRegionCode($regionCode: String) {
         ordersByRegionCode(regionCode: $regionCode) {
@@ -28,9 +26,7 @@ export class Orders extends React.PureComponent<Props> {
 	props: Props;
 	render() {
 		const { region } = this.props;
-		console.log('Orders >>>>>>>>>>>>>');
-		console.log('render this > ', this);
-		console.log('render this.props > ', this.props);
+		console.log('Orders render this.props > ', this.props);
 
 		return (
 				<div>
@@ -52,13 +48,11 @@ export class Orders extends React.PureComponent<Props> {
 							return (
 									<ul>
 										{data.ordersByRegionCode.map((order: any, index: string) => (
-												<Order
-														key={index}
-														_id={order._id}
-														region={region}
-														progress={60}
-														products={order.products}
-												/>
+												<li key={index}>
+													region: {order.region}<br/>
+													_id: {order._id}<br/>
+													Progress: {order.progress}<br/>
+												</li>
 										))}
 									</ul>
 							);

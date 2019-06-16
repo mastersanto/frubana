@@ -1,42 +1,62 @@
+import gql from 'graphql-tag';
 import * as React from 'react';
+import { Query } from 'react-apollo';
+import { withRouter } from 'react-router-dom';
 
-interface Product {
-  _id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  total: number;
-}
+export const GET_ORDER = gql`
+  query productsByOrderId($orderId: String) {
+    productsByOrderId(orderId: $orderId) {
+      _id
+      name
+      quantity
+    }
+  }
+`;
 
 interface Props {
-  region: string;
-  progress: number;
-  products: [Product];
+  order: string!;
 }
 
-export class Order extends React.PureComponent<Props> {
+class Order extends React.PureComponent<Props> {
   props: Props;
   render() {
-    const { _id, region, products, progress } = this.props;
-    console.log('Orders > render this.props > ', this.props);
+    const { order } = this.props;
+    console.log('Order > render this.props > ', this.props);
 
     return (
         <div>
-          Region: {region}<br/>
-          ID: {_id}<br/>
-          Progress: {progress}
-          <ul>
-            {products.map((product: any, index: string) => (
-                <li key={index}>
-                  Name: {product.name}<br/>
-                  Quantity: {product.quantity}<br/>
-                </li>
-            ))}
-          </ul>
+          Order: {order}<br/>
+          <Query
+              query={GET_ORDER}
+              variables={{ orderId: order }}
+          >
+            {({ loading, error, data }) => {
+              console.log('QUERY data > ', data);
+              console.log('QUERY error > ', error);
+              console.log('QUERY this.props > ', this.props);
+              if (!data) {
+                return null;
+              }
+              if (loading) {
+                return <p>Loading...</p>;
+              }
+              return (
+                  <ul>
+                    {data.productsByOrderId.map((product: any, index: string) => (
+                        <li key={index}>
+                          ID: {product._id}<br/>
+                          Name: {product._id}<br/>
+                          Quantity: {product.quantity}<br/>
+                          Status: ???
+                        </li>
+                    ))}
+                  </ul>
+              );
+            }}
+          </Query>
         </div>
     );
   }
 }
 
-export default Order;
-// export default withRouter(Order);
+export default withRouter(Order);
