@@ -5,7 +5,9 @@
     "start": "zen start -e android -d ios",
     "android": "zen start -e android -d ios -d web",
     "ios": "zen start -e ios -d android -d web",
-    "build": "zen build"
+    "build": "zen build",
+    "introspect": "apollo-codegen introspect-schema ./packages/server/src/schema.graphql --output ./schema.ts",
+    "generate": "apollo-codegen generate GLOB_PATH_TO_QUERY_FILES --schema PATH_TO_SCHEMA_FILE --target typescript --output PATH_TO_GENERATED_TYPES_FILE --add-typename --tag-name gql"
   },
   "workspaces": [
     "packages/*"
@@ -71,5 +73,9 @@
   },
   "resolutions": {
     "@types/react": "16.8.2"
+  },
+  "dependencies": {
+    "@types/react-router-dom": "^4.3.4",
+    "apollo-codegen": "^0.20.2"
   }
 }

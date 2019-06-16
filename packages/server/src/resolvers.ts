@@ -14,7 +14,8 @@ export default {
       console.log('Query clip >>> ', id);
       return orders.find(order => order._id === id);
     },
-    orders: () => orders,
+    // ASYNC ???
+    orders: async () => orders,
 		regions: () => getSameValuesArray(orders, 'region_code'),
 		ordersByRegionCode: (obj: any, { regionCode }: { regionCode: string }): any => {
       console.log('ordersByRegionCode ID >>> ', regionCode);

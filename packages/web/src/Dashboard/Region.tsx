@@ -5,11 +5,10 @@ import Orders from './Orders';
 
 const Region = props => {
   const { region } = props.match.params;
-  console.log('Dashboard', props)
+  console.log('Region', props)
 
   return (
       <div>
-        <h2>Dashboard</h2>
         <dl>
           <dt>Region</dt>
           <dd>{region || 'Cant find this region'}</dd>

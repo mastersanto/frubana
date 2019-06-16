@@ -23,6 +23,13 @@ You'll get:
 * Hot reloading enabled for [localhost](http://localhost:3000) environment
 * Test graphql with [GraphiQL](http://localhost:8080/graphiql)
 
+## Routes
+
+* [Orders By Region](http://localhost:3000/region/BAQ)
+```
+/region/:region
+```
+
 ## GraphQL playground
 
 ```
