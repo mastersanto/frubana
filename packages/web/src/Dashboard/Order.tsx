@@ -1,9 +1,10 @@
 import gql from 'graphql-tag';
 import * as React from 'react';
-import { Mutation, Query, Subscription } from 'react-apollo';
+import { Query, Subscription } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
+import Products from './Products';
 
-export const GET_ORDER = gql`
+export const GET_PRODUCTS = gql`
   query productsByOrderId($orderId: String) {
     productsByOrderId(orderId: $orderId) {
       _id
@@ -13,31 +14,27 @@ export const GET_ORDER = gql`
     }
   }
 `;
-
-const COMPLETE_PRODUCT = gql`
-  mutation completeProduct($orderId: String, $productId: String) {
-    completeProduct(orderId: $orderId, productId: $productId) {
+/*
+const ON_COMPLETE_PRODUCT = gql`
+  subscription onCompleteProduct($orderId: String!, $productId: String!) {
+    onCompleteProduct(orderId: $orderId, productId: $productId) {
       _id
       completed
     }
   }
 `;
-
-const ON_COMPLETE_PRODUCT = gql`
-  subscription onCompleteProduct($orderId: String!, $productId: String!) {
-    onCompleteProduct(orderId: $orderId, productId: $productId) {
-      name
-      completed
-    }
-  }
-`;
+ */
 
 interface Props {
-  order: string;
+  order: any;
+  //subscribeToMore: any;
 }
 
-class Order extends React.PureComponent<Props> {
-  props: Props;
+class Order extends React.Component<Props> {
+  constructor(props: Props) {
+    super(props);
+  }
+
   render() {
     const { order } = this.props;
     console.log('Order > render this.props > ', this.props);
@@ -46,11 +43,11 @@ class Order extends React.PureComponent<Props> {
         <div>
           Order: {order}<br/>
           <Query
-              query={GET_ORDER}
+              query={GET_PRODUCTS}
               variables={{ orderId: order }}
           >
-            {({ loading, error, data }) => {
-              console.log('QUERY data > ', data);
+            {({ loading, error, data, subscribeToMore }) => {
+              console.log('ORDER > QUERY data > ', data);
               console.log('QUERY error > ', error);
               console.log('QUERY this.props > ', this.props);
               if (!data) {
@@ -60,41 +57,11 @@ class Order extends React.PureComponent<Props> {
                 return <p>Loading...</p>;
               }
               return (
-                  <ul>
-                    {data.productsByOrderId.map((product: any, index: string) => (
-                        <li key={index}>
-                          ID: {product._id}<br/>
-                          Name: {product._id}<br/>
-                          Quantity: {product.quantity}<br/>
-                          Status: ???<br/>
-                          <Mutation mutation={COMPLETE_PRODUCT} key={product._id}>
-                            {COMPLETE_PRODUCT => (
-                                <button
-                                    onClick={() => {
-                                      COMPLETE_PRODUCT({
-                                        variables: {
-                                          orderId: order,
-                                          productId: product._id
-                                        }});
-                                    }}
-                                    type="submit"
-                                >
-                                  Completed: {product.completed ? 'YES' : 'NO'}
-                                </button>
-                            )}
-                          </Mutation>
-                          <Subscription
-                              subscription={ON_COMPLETE_PRODUCT}
-                              variables={{
-                                orderId: order,
-                                productId: product._id
-                              }}
-                          >
-                            {() => {return null;}}
-                          </Subscription>
-                        </li>
-                    ))}
-                  </ul>
+                  <Products
+                      order={order}
+                      products={data.productsByOrderId}
+                      subscribeToMore={() => subscribeToMore}
+                  />
               );
             }}
           </Query>
