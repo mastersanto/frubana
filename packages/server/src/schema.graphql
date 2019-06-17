@@ -4,6 +4,7 @@ type Product {
   price: Int
   quantity: Int
   total: Int
+  completed: Boolean
 }
 
 type Order {
@@ -22,4 +23,18 @@ type Query {
   routes: [String]
   ordersByRouteId(routeId: String): [Order]
   productsByOrderId(orderId: String): [Product]
+}
+
+type Mutation {
+  completeProduct(orderId: String, productId: String): Product
+}
+
+type Subscription {
+  onCompleteProduct(orderId: String, productId: String): Product
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
 }

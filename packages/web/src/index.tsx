@@ -1,6 +1,9 @@
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
-import { createHttpLink } from 'apollo-link-http';
+import { ApolloLink, split } from 'apollo-link';
+import { HttpLink } from 'apollo-link-http';
+import { WebSocketLink } from 'apollo-link-ws';
+import { getMainDefinition } from 'apollo-utilities';
 
 import * as React from 'react';
 import { ApolloProvider } from 'react-apollo';
@@ -8,20 +11,40 @@ import * as ReactDOM from 'react-dom';
 
 import Routes from './Routes';
 
-const GRAPHQL_API_URL = 'http://localhost:8080/graphql';
 const cache = new InMemoryCache();
+
+const httpLink = new HttpLink({
+  uri: 'http://localhost:8080/graphql'
+});
+
+const wsLink = new WebSocketLink({
+	uri: `ws://localhost:8080/graphql`,
+	options: {
+		reconnect: true
+	}
+});
+
+const terminatingLink = split(
+    ({ query }) => {
+      const { kind, operation } = getMainDefinition(query);
+      return (
+          kind === 'OperationDefinition' && operation === 'subscription'
+      );
+    },
+    wsLink,
+    httpLink,
+);
+
+const link = ApolloLink.from([terminatingLink]);
 
 const client = new ApolloClient({
   cache,
-  link: createHttpLink({
-    uri: GRAPHQL_API_URL
-  })
+  link
 });
 
 ReactDOM.render(
     <ApolloProvider client={client}>
       <Routes />
     </ApolloProvider>,
-    // @ts-ignore
     document.getElementById('root') as HTMLElement
 );

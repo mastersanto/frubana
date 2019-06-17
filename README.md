@@ -13,7 +13,7 @@ yarn start
 
 You'll get:
 * Hot reloading enabled for [localhost](http://localhost:3000) environment
-* Test graphql with [GraphiQL](http://localhost:8080/graphiql)
+* Test graphql with [GraphQL Playgroud](http://localhost:8080/graphql)
 
 ## Routes
 
@@ -65,12 +65,27 @@ query ordersByRouteId($routeId: String) {
   }
 }
 
-query productsByOrderId($orderId: ID!) {
+query productsByOrderId($orderId: String!) {
   productsByOrderId(orderId: $orderId) {
     name
     quantity
     price
     total
+    completed
+  }
+}
+
+mutation completeProduct($orderId: String!, $productId: String!) {
+  completeProduct(orderId: $orderId, productId: $productId) {
+    name
+    completed
+  }
+}
+
+subscription onCompleteProduct($orderId: String!, $productId: String!) {
+  onCompleteProduct(orderId: $orderId, productId: $productId) {
+    name
+    completed
   }
 }
 ```
@@ -98,6 +113,24 @@ query productsByOrderId
 ```
 {
   "orderId": "2d2dc292-b2d8-4017-9ffd-33e17d4bcc40"
+}
+```
+
+mutation completeProduct
+
+```
+{
+  "orderId": "2d2dc292-b2d8-4017-9ffd-33e17d4bcc40",
+  "productId": "91f77c18-1222-40e2-95d1-d653dd0c3cfa"
+}
+```
+
+subscription onCompleteProduct
+
+```
+{
+  "orderId": "2d2dc292-b2d8-4017-9ffd-33e17d4bcc40",
+  "productId": "91f77c18-1222-40e2-95d1-d653dd0c3cfa"
 }
 ```
 
